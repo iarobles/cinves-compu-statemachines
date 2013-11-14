@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cinvestav.compu.statemachines" basedir="." default="package">
+	
+	<property file="${user.home}/com.diatom.ant.properties" />
+	
+	<path id="classpath">
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+
+	<target name="init">
+		<mkdir dir="build" />
+		<mkdir dir="build/classes" />
+		<mkdir dir="build/jars" />
+	</target>
+
+	<target name="clean" description="cleaning build dir">
+		<delete dir="build" includeemptydirs="true" includes="**/**" />
+	</target>
+
+	<target name="compile" depends="clean, init">
+		<javac srcdir="src" classpathref="classpath" destdir="build/classes" excludes="**/test/**" />
+	</target>
+
+
+	<target name="package" depends="compile">
+		<jar basedir="build/classes" destfile="build/jars/${ant.project.name}.jar">
+			<include name="**" />
+			<manifest>
+				<attribute name="Main-Class" value="cinvestav.compu.statemachine.demos.FADemo" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="update-repository" depends="package">
+		<copy todir="${dir.workspace}/com.diatom.standards/projects" file="build/jars/${ant.project.name}.jar"> 	
+		</copy>
+	</target>
+
+</project>
